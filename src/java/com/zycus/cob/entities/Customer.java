@@ -120,7 +120,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "com.zycus.cob.entities.Customer[ id=" + id + " ]";
+        return "com.zycus.cob.entities.Customer[ id=" + id + " Name:"+firstName+" "+lastName+" ]";
     }
 
 }
