@@ -2,12 +2,20 @@ package com.zycus.cob.ws.mock;
 
 import com.zycus.cob.entities.Customer;
 import com.zycus.cob.mock.CustomerOperations;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 @Path("/customers")
 public class CustomerService {
@@ -19,13 +27,18 @@ public class CustomerService {
     @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public List<Customer> upload() {
-        return null;
+    public String upload(
+        @FormDataParam("custExcelFile") InputStream uploadedInputStream,
+	@FormDataParam("custExcelFile") FormDataContentDisposition fileDetail) {
+        System.out.println("enterd");
+        System.out.println(fileDetail.getFileName());
+        return "done";
     }
 
     @POST
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public com.zycus.cob.vo.Error create(Customer newCustomer) {
         CustomerOperations co = new CustomerOperations();
         com.zycus.cob.vo.Error e = co.createCustomer(newCustomer);
@@ -34,4 +47,17 @@ public class CustomerService {
         return e;
     }
 
+    private void saveFile(InputStream inputStream, String dest) throws FileNotFoundException, IOException {
+        OutputStream outputStream = new FileOutputStream(new File( dest));
+        int read = 0;
+        byte[] bytes = new byte[1024];
+
+        outputStream = new FileOutputStream(new File(dest));
+        while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+        }
+        outputStream.flush();
+        outputStream.close();
+    }
+    
 }
