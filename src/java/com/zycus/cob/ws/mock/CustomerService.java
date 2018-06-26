@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -30,9 +32,15 @@ public class CustomerService {
     public String upload(
         @FormDataParam("custExcelFile") InputStream uploadedInputStream,
 	@FormDataParam("custExcelFile") FormDataContentDisposition fileDetail) {
-        System.out.println("enterd");
-        System.out.println(fileDetail.getFileName());
-        return "done";
+        try {
+            System.out.println("enterd");
+            System.out.println(fileDetail.getFileName());
+            saveFile(uploadedInputStream, "/home/vijay/temp/"+fileDetail.getFileName());
+            return "done";
+        } catch (IOException ex) {
+            Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
     }
 
     @POST
