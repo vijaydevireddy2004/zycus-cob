@@ -8,9 +8,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/cutomers")
+@Path("/customers")
 public class CustomerService {
 
+    
     public CustomerService(){
     }
     
@@ -22,7 +23,7 @@ public class CustomerService {
     }
 
     @POST
-    @Path("/create/")
+    @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     public Customer create(Customer newCustomer) {
         return newCustomer;
