@@ -1,6 +1,7 @@
 package com.zycus.cob.ws.mock;
 
 import com.zycus.cob.entities.Customer;
+import com.zycus.cob.mock.CustomerOperations;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -25,8 +26,12 @@ public class CustomerService {
     @POST
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer create(Customer newCustomer) {
-        return newCustomer;
+    public com.zycus.cob.vo.Error create(Customer newCustomer) {
+        CustomerOperations co = new CustomerOperations();
+        com.zycus.cob.vo.Error e = co.createCustomer(newCustomer);
+        System.out.println(e);
+        System.out.println(e.getError());
+        return e;
     }
 
 }
