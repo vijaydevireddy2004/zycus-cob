@@ -2,6 +2,7 @@ package com.zycus.cob.ws.mock;
 
 import com.zycus.cob.entities.Customer;
 import com.zycus.cob.mock.CustomerOperations;
+import com.zycus.cob.mock.CustomerUploadHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,6 +37,8 @@ public class CustomerService {
             System.out.println("enterd");
             System.out.println(fileDetail.getFileName());
             saveFile(uploadedInputStream, "/home/vijay/temp/"+fileDetail.getFileName());
+            CustomerUploadHandler cuh = new CustomerUploadHandler();
+            cuh.upload("/home/vijay/temp/"+fileDetail.getFileName());
             return "done";
         } catch (IOException ex) {
             Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
