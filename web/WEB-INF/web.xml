@@ -28,4 +28,9 @@
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>  
     
+    <context-param>
+        <param-name>FILES_UPLOAD_PATH</param-name>
+                <param-value>/home/vijay/temp/</param-value>
+    </context-param>
+    
 </web-app>

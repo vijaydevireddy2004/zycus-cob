@@ -12,17 +12,19 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 @Path("/customers")
 public class CustomerService {
-
+    @Context ServletContext context;
     
     public CustomerService(){
     }
@@ -36,9 +38,13 @@ public class CustomerService {
         try {
             System.out.println("enterd");
             System.out.println(fileDetail.getFileName());
-            saveFile(uploadedInputStream, "/home/vijay/temp/"+fileDetail.getFileName());
+            String uploadPath = context.getInitParameter("FILES_UPLOAD_PATH");
+            saveFile(uploadedInputStream, uploadPath+fileDetail.getFileName());
             CustomerUploadHandler cuh = new CustomerUploadHandler();
-            cuh.upload("/home/vijay/temp/"+fileDetail.getFileName());
+            List<com.zycus.cob.vo.Error> errors = cuh.upload(uploadPath+fileDetail.getFileName());
+            for(com.zycus.cob.vo.Error e: errors){
+                System.out.println(e.getErrorCode()+", "+e.getError()+", "+e.getField());
+            }
             return "done";
         } catch (IOException ex) {
             Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
