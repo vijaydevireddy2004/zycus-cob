@@ -22,6 +22,16 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+/**
+ * CustomerService.java - a mock class for mimic the web service behavior
+ * Provides customer web service with upload and create those can be used to  create a new customer or upload multiple customers 
+ * To use this service the user needs to be authenticated and get the JWT token
+ * The authentication token need to be supplied along with each request after authentication 
+ * <p>
+ * The tow methods are used to post the customer data to the application  
+ * @author  Vijaya Bhaskar D
+ * @version 1.0 
+ */
 @Path("/customers")
 public class CustomerService {
     @Context ServletContext context;
@@ -29,6 +39,14 @@ public class CustomerService {
     public CustomerService(){
     }
     
+/**
+ * This consumes the uploaded data from the .xlsx file uploaded through the form and creates the data
+ * <p>
+ * The data needs to be in .xlsx format and each customer data needs to be separated into different sheet.
+ * @param  uploadedInputStream  is the stream of the .xlsx file that is uploaded
+ * @param  fileDetail the uploaded file details
+ * @return String abut the status of upload for each record
+  */    
     @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
