@@ -1,5 +1,6 @@
 package com.zycus.cob.cust;
 
+import com.google.gson.Gson;
 import com.zycus.cob.vo.Result;
 import com.zycus.com.entities.Customer;
 import java.io.BufferedInputStream;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 public class TC1_CustomerCreateTest {
 
     @Test
-    public void multiplicationOfZeroIntegersShouldReturnZero() {
+    public void verifyCustomerErrorCode_TC1() {
         Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
         WebTarget webTarget = client.target("http://localhost:8080/zycus-cob/rest/").path("customers/create");
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
@@ -42,11 +43,37 @@ public class TC1_CustomerCreateTest {
         Response response = invocationBuilder.post(Entity.entity(c, MediaType.APPLICATION_JSON));
         System.out.println("response:" + response.hasEntity());
 //        Result e = (Result) response.getEntity();
-        String r = readInputStreamAsString((InputStream) response.getEntity());
-        System.out.println(r);
-//        assertEquals(0, e.getErrorCode());
+        String responseString = readInputStreamAsString((InputStream) response.getEntity());
+        System.out.println(responseString);
+        Gson g = new Gson(); 
+        Result result = g.fromJson(responseString, Result.class);
+        assertEquals("1", result.getErrorCode());
     }
 
+    @Test
+    public void verifyCustomerErrorCode_TC2() {
+        Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
+        WebTarget webTarget = client.target("http://localhost:8080/zycus-cob/rest/").path("customers/create");
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+
+        // Build customer object to post to web service
+        Customer c = new Customer("1");
+        c.setFirstName("Vijay");
+        c.setMiddleName("Bhaskar");
+        c.setLastName("D");
+        c.setDescription("none");
+        c.setDob(new Date());
+
+        Response response = invocationBuilder.post(Entity.entity(c, MediaType.APPLICATION_JSON));
+        System.out.println("response:" + response.hasEntity());
+//        Result e = (Result) response.getEntity();
+        String responseString = readInputStreamAsString((InputStream) response.getEntity());
+        System.out.println(responseString);
+        Gson g = new Gson(); 
+        Result result = g.fromJson(responseString, Result.class);
+        assertEquals("0", result.getErrorCode());
+    }    
+    
     public static String readInputStreamAsString(InputStream in) {
         try {
             BufferedInputStream bis = new BufferedInputStream(in);
