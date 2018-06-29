@@ -1,9 +1,11 @@
 package com.zycus.cob.vo;
 
-public class Error {
+import java.io.Serializable;
+
+public class Result implements Serializable{
     String errorCode, error, field;
 
-    public Error(String errorCode, String error, String field) {
+    public Result(String errorCode, String error, String field) {
         this.errorCode = errorCode;
         this.error = error;
         this.field = field;

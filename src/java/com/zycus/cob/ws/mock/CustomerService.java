@@ -3,6 +3,7 @@ package com.zycus.cob.ws.mock;
 import com.zycus.cob.entities.Customer;
 import com.zycus.cob.mock.CustomerOperations;
 import com.zycus.cob.mock.CustomerUploadHandler;
+import com.zycus.cob.vo.Result;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -59,8 +60,8 @@ public class CustomerService {
             String uploadPath = context.getInitParameter("FILES_UPLOAD_PATH");
             saveFile(uploadedInputStream, uploadPath+fileDetail.getFileName());
             CustomerUploadHandler cuh = new CustomerUploadHandler();
-            List<com.zycus.cob.vo.Error> errors = cuh.upload(uploadPath+fileDetail.getFileName());
-            for(com.zycus.cob.vo.Error e: errors){
+            List<com.zycus.cob.vo.Result> errors = cuh.upload(uploadPath+fileDetail.getFileName());
+            for(com.zycus.cob.vo.Result e: errors){
                 System.out.println(e.getErrorCode()+", "+e.getError()+", "+e.getField());
             }
             return "done";
@@ -74,11 +75,10 @@ public class CustomerService {
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public com.zycus.cob.vo.Error create(Customer newCustomer) {
+    public Result create(Customer newCustomer) {
         CustomerOperations co = new CustomerOperations();
-        com.zycus.cob.vo.Error e = co.createCustomer(newCustomer);
-        System.out.println(e);
-        System.out.println(e.getError());
+        com.zycus.cob.vo.Result e = co.createCustomer(newCustomer);
+        System.out.println("From web service reading error:"+e.getError());
         return e;
     }
 
